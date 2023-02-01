@@ -1,0 +1,11 @@
+# NPM modules
+node_modules/
+
+# Environment variables
+.env
+
+# esp32HttpsClient codes with private information
+esp32HttpsClient.ino
+
+# Railway App certificate
+railwayApp.crt

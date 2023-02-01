@@ -1,0 +1,97 @@
+<%
+function getFormattedDate(date) {
+    let year = date.getFullYear();
+    let month = (1 + date.getMonth()).toString();
+    month = month.length > 1 ? month : '0' + month;
+    let day = date.getDate().toString();
+    day = day.length > 1 ? day : '0' + day;
+    let hour = date.getHours().toString();
+    hour = hour.length > 1 ? hour : '0' + hour;
+    let minute = date.getMinutes().toString();
+    minute = minute.length > 1 ? minute : '0' + minute;
+    let second = date.getSeconds().toString();
+    second = second.length > 1 ? second : '0' + second;
+    return year + '-' + month + '-' + day + '  ' + hour + ':' + minute + ':' + second;
+}
+%>
+
+<!doctype html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>ESP32_溫濕度檢知記錄表</title>
+        <style type="text/css">
+            body {
+                font-family:"微軟正黑體", "黑體-繁", sans-serif;
+            }
+
+            #main {
+                width:380px;
+            }
+
+            table {
+                width:100%;
+                border: 2px solid #166466;
+                border-spacing: 1px;
+            }
+
+            th {
+                text-align: center;
+                background-color:#54B86C;
+                color:#FFF;
+                padding:4px;
+            }
+
+            td {
+                text-align: center;
+                padding:5px;
+                padding-left:4px;
+                border-bottom: 1px solid #ddd;
+            }
+
+            a.prev {
+                float:left;
+                text-decoration:none
+            }
+
+            a.next {
+                float:right;
+                text-decoration:none
+            }
+        </style>
+    </head>
+
+    <body>
+        <h1>ESP32_溫濕度檢知數據</h1>
+
+        <div id="main">
+            <table>
+                <tbody>
+                    <tr>
+                    <th>溫度</th>
+                    <th>濕度</th>
+                    <th>記錄時間</th>
+                    </tr>
+                    <%
+                    docs.forEach( function(d) {
+                    %>
+                    <tr>
+                    <td><%= d['temperature'] %>&deg;C</td>
+                    <td><%= d['humidity'] %>%</td>
+                    <td><%= getFormattedDate(d['time']) %></td>
+                    </tr>
+                    <% }); %>
+                </tbody>
+            </table>
+            <br>
+
+            <% if (pageNum > 1) { %>
+            <a href='/data/?p=<%= Number(pageNum)-1 %>' class="prev">&lt;&lt; Previous page</a>
+            <% } %>
+
+            <% if (pageNum != lastPageNum) { %>
+            <a href='/data/?p=<%= Number(pageNum)+1 %>' class="next">Next Page &gt;&gt;</a>
+            <% } %>
+        </div>
+    </body>
+</html>
